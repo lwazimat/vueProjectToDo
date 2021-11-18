@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, intial-scale 1.0">
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+        <style> 
+            .strikeout{
+                text-decoration: line-through;
+                color: grey;
+            }
+            table{
+                margin-top: 50px;
+                text-align: center;
+                background: #333;
+                color: #fff;
+            }
+            #High{
+                background-color: red;
+            }
+            #Medium{
+                background-color: orange;
+            }
+            #Low{
+                background-color: lightgrey;
+            }
+        
+        
+        </style>
+        <title>ToDo App In Vue</title>
+    </head>
+    <body>
+        <div id="myApp">
+            <h1>{{title.toUpperCase()}}</h1>
+                    <button v-if="state==='edit'" @click="changeState('default')">Cancel</button>
+                    <button v-else="state==='default'"
+                    @click="changeState('edit')">Add Item</button>
+                <div v-if="state==='edit'">
+                    <p id="output">{{subTittle}}</p>
+                    <label>Task</label>
+                    <input type="text" v-model="myModel" v-on:keyup.enter = "saveItem">
+                    
+                <button @click="saveItem()" :disabled="myModel.length===0">Save the Item</button>
+                   <p>Task List</p> <ul>
+                        <li v-for="x in sortedItems" :class="{strikeout : x.done}" @click="toggleDone(x)">{{x.label}} 
+                            
+                            <div id="box">
+                                <span>{{form.date2}}</span>
+                                <input type="datetime-local" v-model="form.date2">
+                                
+                            </div>
+                            
+                            <div id="priority">
+                                    Priority Level:
+                                          <select v-model="form.option">
+                                                <option value="High" id="High">High</option>
+                                                <option value="Medium" id="Medium">Medium</option>
+                                                <option value="Low" id="Low">Low</option>
+                                          </select>
+            
+                                            <span>{{form.option}}</span> 
+                         
+                    </div>
+                        
+                        
+                        
+                        <span @click="editTask()"class="fa fa-edit"></span><span @click="deleteTask()" class="fa fa-trash"></span> 
+                        
+                        
+                    </ul>
+                        
+                    
+                    
+                </div>
+        </div>
+        <script src="https://unpkg.com/vue"></script>
+        <script>
+               var box = new Vue({
+                el:'#box',
+                data:{
+                form:{
+                  date2 : 'Due'
+                  }
+                }});
+            
+            var priority = new Vue({
+                el:'#priority',
+                data:{
+                    form:{
+                        option : ''
+                    }
+                }
+            });
+            
+            
+            let myVue = new Vue({
+                el : '#myApp',
+                data : {
+                state :  "default",
+                title : 'My ToDo App',
+                subTitle : "Add an item to the list",
+                myPriority : "",
+                myModel : "Write what you want to do",
+                myList : [{label : "Walk the dog",
+                          done : false},
+                          {label : "Go for a swim",
+                          done : true},
+                          {label : "Do the Homework",
+                           done : false},
+                         ]
+                    
+            },
+                methods : {
+                    saveItem(){
+                        this.myList.push({label : this.myModel, done : false});
+                        this.myModel = "";
+                    },
+                    changeState(newState){
+                        this.state = newState;
+                    },
+                    toggleDone(x){
+                        x.done = !x.done;
+                    },
+                    
+                },
+                computed :{
+                    sortedItems(){
+                        return this.myList.slice(0).reverse();
+                    },
+                                    
+                    
+                },
+                deleteAll(){
+                    this.myList.delete;
+                }
+            
+            })
+            document.getElementById("output").innerHTML = myVue.$data.subTitle;
+        
+        </script>
+    </body>
+</html>
